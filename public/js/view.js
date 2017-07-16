@@ -11,26 +11,28 @@ $(document).ready(function() {
   $(document).on("blur", ".burger-item", cancelEdit);
   $(document).on("submit", "#burger-form", insertBurger);
 
-  // Our initial todos array
   var burgers;
 
-  // Getting todos from database when page loads
   getBurgers();
 
-  // This function resets the todos displayed with new todos from the database
+
   function initializeRows() {
+    //empty the container of pre-existing info
     burgerContainer.empty();
+    //determine how many objects to add with an array
     var rowsToAdd = [];
     for (var i = 0; i < burgers.length; i++) {
+    //add data from array
       rowsToAdd.push(createNewRow(burgers[i]));
     }
     burgerContainer.prepend(rowsToAdd);
   }
 
-  // This function grabs todos from the database and updates the view
+
   function getBurgers() {
+    //url pathing for get 
     $.get("/api/burgers", function(data) {
-      console.log("burgers", data);
+      // console.log("burgers", data);
       burgers = data;
       initializeRows();
     });
@@ -45,19 +47,17 @@ $(document).ready(function() {
     })
     .done(function() {
       getBurgers();
-    });
+    });//problematic
   }
 
   function toggleComplete() {
     var burger = $(this)
       .parent()
       .data("burger");
-
     burger.eaten = !burger.eaten;
     updateBurger(burger);
   }
 
-  // This function handles showing the input box for a user to edit a todo
   function editBurger() {
     var currentBurger = $(this).data("burger");
     $(this)
@@ -74,8 +74,6 @@ $(document).ready(function() {
       .focus();
   }
 
-  // This function starts updating a todo in the database if a user hits the
-  // "Enter Key" While in edit mode
   function finishEdit(event) {
     var updatedBurger;
     if (event.key === "Enter") {
@@ -93,7 +91,6 @@ $(document).ready(function() {
     }
   }
 
-  // This function updates a todo in our database
   function updateBurger(burger) {
     $.ajax({
       method: "PUT",
@@ -105,8 +102,6 @@ $(document).ready(function() {
     });
   }
 
-  // This function is called whenever a todo item is in edit mode and loses focus
-  // This cancels any edits being made
   function cancelEdit() {
     var currentBurger = $(this).data("burger");
     $(this)
@@ -159,8 +154,7 @@ $(document).ready(function() {
         .trim(),
       eaten: false
     };
-
-    // Posting the new todo, calling getTodos when done
+    
     $.post("/api/burgers", burger, function() {
       getBurgers();
     });
