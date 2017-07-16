@@ -8,13 +8,11 @@ $(document).ready(function() {
   $(document).on("click", "button.complete", toggleComplete);
   $(document).on("click", ".burger-item", editBurger);
   $(document).on("keyup", ".burger-item", finishEdit);
-  $(document).on("blur", ".burger-item", cancelEdit);
   $(document).on("submit", "#burger-form", insertBurger);
 
   var burgers;
 
   getBurgers();
-
 
   function initializeRows() {
     //empty the container of pre-existing info
@@ -38,7 +36,6 @@ $(document).ready(function() {
     });
   }
 
-  // This function deletes a todo when the user clicks the delete button
   function deleteBurger() {
     var id = $(this).data("id");
     $.ajax({
@@ -91,34 +88,16 @@ $(document).ready(function() {
     }
   }
 
-  function updateBurger(burger) {
-    $.ajax({
+function updateBurger(burger) {
+$.ajax({
       method: "PUT",
       url: "/api/burgers",
       data: burger
-    })
-    .done(function() {
+    }).done(function() {
       getBurgers();
     });
   }
 
-  function cancelEdit() {
-    var currentBurger = $(this).data("burger");
-    $(this)
-      .children()
-      .hide();
-    $(this)
-      .children("input.edit")
-      .val(currentBurger.name);
-    $(this)
-      .children("span")
-      .show();
-    $(this)
-      .children("button")
-      .show();
-  }
-
-  // This function constructs a todo-item row
   function createNewRow(burger) {
     var newInputRow = $("<li>");
     newInputRow.addClass("list-group-item burger-item");
@@ -146,19 +125,16 @@ $(document).ready(function() {
     return newInputRow;
   }
 
-  function insertBurger(event) {
-    event.preventDefault();
-    var burger = {
-      name: newItemInput
-        .val()
-        .trim(),
-      eaten: false
+function insertBurger(event) {
+  var burger = {
+    name: newItemInput
+      .val()
+      .trim(),
+        eaten: false
     };
-    
-    $.post("/api/burgers", burger, function() {
-      getBurgers();
-    });
-    newItemInput.val("");
-  }
 
+$.post("/api/burgers", burger, function() {
+  getBurgers();});
+  newItemInput.val("");
+  }
 });
