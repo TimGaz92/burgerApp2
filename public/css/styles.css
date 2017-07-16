@@ -36,3 +36,15 @@ body{
 .li{
   background-color: grey;
 }
+#maintitle{
+  color: white;
+   text-align: center;
+}
+#subtitle{
+  color:white;
+   text-align: center;
+}
+#quote{
+  color:white;
+  text-align: center;
+}
